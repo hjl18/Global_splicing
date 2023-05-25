@@ -6,6 +6,9 @@ from matplotlib import pyplot as plt
 import random
 import time
 import my_RANSAC
+import my_Warp
+
+
 def display(img):
     plt.imshow(cv2.cvtColor(np.float32(img / 255), cv2.COLOR_BGR2RGB))
     plt.title("Splicing")
@@ -22,9 +25,21 @@ def same_size(A, B):
     h1, w1, _ = A.shape
     h2, w2, _ = B.shape
     if w1 > w2:
-        B = cv2.copyMakeBorder(B, 0, 0, 0, w1 - w2, cv2.BORDER_CONSTANT, value=(0, 0, 0))
+        B = cv2.copyMakeBorder(B,
+                               0,
+                               0,
+                               0,
+                               w1 - w2,
+                               cv2.BORDER_CONSTANT,
+                               value=(0, 0, 0))
     else:
-        A = cv2.copyMakeBorder(A, 0, 0, w2 - w1, 0, cv2.BORDER_CONSTANT, value=(0, 0, 0))
+        A = cv2.copyMakeBorder(A,
+                               0,
+                               0,
+                               w2 - w1,
+                               0,
+                               cv2.BORDER_CONSTANT,
+                               value=(0, 0, 0))
     return (A, B)
 
 
@@ -49,6 +64,7 @@ def cylindrical_projection(img, f):
             else:
                 blank[y, x, :] = img[point_y, point_x, :]
     return blank
+
 
 # 去除黑色边框
 def remove_the_blackborder(img):
@@ -104,8 +120,9 @@ def Warp(A, B):
                        singlePointColor=(255, 0, 0),
                        matchesMask=matchesMask,
                        flags=0)
-    img3 = cv2.drawMatchesKnn(img1gray, kp1, img2gray, kp2, matches, None, **draw_params)
-    cv2.imshow("FLANN",img3)
+    img3 = cv2.drawMatchesKnn(img1gray, kp1, img2gray, kp2, matches, None,
+                              **draw_params)
+    cv2.imshow("FLANN", img3)
     #rows, cols = srcImg.shape[:2]
     #寻找单应性矩阵
     MIN_MATCH_COUNT = 20
@@ -115,8 +132,11 @@ def Warp(A, B):
     H = my_RANSAC.RANSAC(src_pts, dst_pts)
     print("单应性矩阵H为：")
     print(H)
-    warpImg = cv2.warpPerspective(dstImg, np.linalg.inv(H), (dstImg.shape[1] + srcImg.shape[1], dstImg.shape[0]))
-
+    #todo: implement this function manually.
+    # warpImg = cv2.warpPerspective(dstImg, np.linalg.inv(H), (dstImg.shape[1] + srcImg.shape[1], dstImg.shape[0]))
+    warpImg = my_Warp.myWarpPerspective(
+        dstImg, np.linalg.inv(H),
+        (dstImg.shape[0], dstImg.shape[1] + srcImg.shape[1]))
     rows, cols = srcImg.shape[:2]
 
     display(warpImg)
@@ -141,7 +161,9 @@ def Warp(A, B):
                 dstImgLen = float(abs(col - left))
                 srcImgLen = float(abs(col - right))
                 alpha = dstImgLen / (dstImgLen + srcImgLen)
-                res[row, col] = np.clip(srcImg[row, col] * (1 - alpha) + warpImg[row, col] * alpha, 0, 255)
+                res[row, col] = np.clip(
+                    srcImg[row, col] * (1 - alpha) + warpImg[row, col] * alpha,
+                    0, 255)
 
     warpImg[0:srcImg.shape[0], 0:srcImg.shape[1]] = res
     warpImg = remove_the_blackborder(warpImg)

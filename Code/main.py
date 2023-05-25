@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 import random
 import time
 import my_RANSAC
+import my_Warp
 def display(img):
     plt.imshow(cv2.cvtColor(np.float32(img / 255), cv2.COLOR_BGR2RGB))
     plt.title("Splicing")
@@ -115,10 +116,11 @@ def Warp(A, B):
     H = my_RANSAC.RANSAC(src_pts, dst_pts)
     print("单应性矩阵H为：")
     print(H)
-    warpImg = cv2.warpPerspective(dstImg, np.linalg.inv(H), (dstImg.shape[1] + srcImg.shape[1], dstImg.shape[0]))
-
+    warpImg = my_Warp.warpPerspective(dstImg, np.linalg.inv(H), (dstImg.shape[1] + srcImg.shape[1], dstImg.shape[0]))
+    #print((warpImg.shape[0],warpImg.shape[1]))
+    #print((dstImg.shape[0], dstImg.shape[1]))
     rows, cols = srcImg.shape[:2]
-
+    #print(rows,cols)
     display(warpImg)
     for col in range(0, cols):
         if srcImg[:, col].any() and warpImg[:, col].any():

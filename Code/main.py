@@ -134,6 +134,7 @@ def Warp(A, B):
     print(H)
     #todo: implement this function manually.
     # warpImg = cv2.warpPerspective(dstImg, np.linalg.inv(H), (dstImg.shape[1] + srcImg.shape[1], dstImg.shape[0]))
+
     warpImg = my_Warp.myWarpPerspective(
         dstImg, np.linalg.inv(H),
         (dstImg.shape[0], dstImg.shape[1] + srcImg.shape[1]))
@@ -170,17 +171,57 @@ def Warp(A, B):
     display(warpImg)
     return warpImg
 
+def Splice(dir_name):
+    if dir_name == "..//data//source004":
+        img1 = cv2.imread(dir_name+'//panorama03_03.jpg')
+        img2 = cv2.imread(dir_name+'//panorama03_04.jpg')
+        img3 = cv2.imread(dir_name+'//panorama03_07.jpg')
+        imgnew1 = Warp(img1, img2)
+        imgnew2 = Warp(imgnew1, img3)
+        save(imgnew2, 'source004')
+    elif dir_name == '..//data//source005':
+        img1 = cv2.imread(dir_name+'//file0001.jpg')
+        img2 = cv2.imread(dir_name+'//file0002.jpg')
+        img3 = cv2.imread(dir_name+'//file0003.jpg')
+        img4 = cv2.imread(dir_name+'//file0004.jpg')
+        img5 = cv2.imread(dir_name+'//file0005.jpg')
+        imgnew1 = Warp(img5, img1)
+        imgnew2 = Warp(img2, img3)
+        imgnew3 = Warp(imgnew1, img4)
+        imgnew4 = Warp(imgnew3, imgnew2)
+        save(imgnew4, 'source005')
+    elif dir_name == '..//data//source006':
+        img1 = cv2.imread(dir_name+'//yosemite1.jpg')
+        img2 = cv2.imread(dir_name+'//yosemite2.jpg')
+        img3 = cv2.imread(dir_name+'//yosemite3.jpg')
+        imgnew1 = Warp(img1, img2)
+        imgnew2 = Warp(imgnew1, img3)
+        save(imgnew2, 'source006')
+    elif dir_name == '..//data//source007':
+        img1 = cv2.imread(dir_name+'//0.jpg')
+        img2 = cv2.imread(dir_name+'//1.jpg')
+        img3 = cv2.imread(dir_name+'//2.jpg')
+        img4 = cv2.imread(dir_name+'//3.jpg')
+        imgnew1 = Warp(img1, img2)
+        imgnew2 = Warp(img3, img4)
+        imgnew3 = Warp(imgnew1, imgnew2)
+        save(imgnew3, 'source007')
+    elif dir_name == '..//data//source008':
+        img1 = cv2.imread(dir_name+'//01.jpg')
+        img2 = cv2.imread(dir_name+'//02.jpg')
+        img3 = cv2.imread(dir_name+'//03.jpg')
+        imgnew1 = Warp(img1, img2)
+        imgnew2 = Warp(imgnew1, img3)
+        save(imgnew2, 'source008')
+
+
+
 
 if __name__ == '__main__':
     dir_name = '..//data'
     dir_2_name = os.listdir(dir_name)
-    print(dir_2_name)
-    img1 = cv2.imread('..//data//source004//panorama03_03.jpg')
-    img2 = cv2.imread('..//data//source004//panorama03_04.jpg')
-    img3 = cv2.imread('..//data//source004//panorama03_07.jpg')
-    #img1 = cylindrical_projection(img1, 1500)
-    #img2 = cylindrical_projection(img2, 1500)
-    #img3 = cylindrical_projection(img3, 1500)
-    imgnew1 = Warp(img1, img2)
-    imgnew2 = Warp(imgnew1, img3)
-    save(imgnew2, 1)
+    #print(dir_2_name)
+    for img_dir in dir_2_name:
+        img_path = dir_name +'//'+ img_dir
+        #print(img_path)
+        Splice(img_path)

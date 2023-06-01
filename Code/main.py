@@ -133,10 +133,12 @@ def Warp(A, B):
     print("单应性矩阵H为：")
     print(H)
     #todo: implement this function manually.
-    # warpImg = cv2.warpPerspective(dstImg, np.linalg.inv(H), (dstImg.shape[1] + srcImg.shape[1], dstImg.shape[0]))
-    warpImg = my_Warp.myWarpPerspective(
+    warpImg = cv2.warpPerspective(
         dstImg, np.linalg.inv(H),
-        (dstImg.shape[0], dstImg.shape[1] + srcImg.shape[1]))
+        (dstImg.shape[1] + srcImg.shape[1], dstImg.shape[0]))
+    # warpImg = my_Warp.myWarpPerspective(
+    #     dstImg, np.linalg.inv(H),
+    #     (dstImg.shape[0], dstImg.shape[1] + srcImg.shape[1]))
     rows, cols = srcImg.shape[:2]
 
     display(warpImg)
@@ -175,9 +177,9 @@ if __name__ == '__main__':
     dir_name = '..//data'
     dir_2_name = os.listdir(dir_name)
     print(dir_2_name)
-    img1 = cv2.imread('..//data//source004//panorama03_03.jpg')
-    img2 = cv2.imread('..//data//source004//panorama03_04.jpg')
-    img3 = cv2.imread('..//data//source004//panorama03_07.jpg')
+    img1 = cv2.imread('..//data//mysource//DJI_0278.jpg')
+    img2 = cv2.imread('..//data//mysource//DJI_0279.jpg')
+    img3 = cv2.imread('..//data//mysource//DJI_0280.jpg')
     #img1 = cylindrical_projection(img1, 1500)
     #img2 = cylindrical_projection(img2, 1500)
     #img3 = cylindrical_projection(img3, 1500)

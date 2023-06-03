@@ -213,6 +213,13 @@ def Splice(dir_name):
         imgnew1 = Warp(img1, img2)
         imgnew2 = Warp(imgnew1, img3)
         save(imgnew2, 'source008')
+    elif dir_name == '..//data//my_source':
+        img1 = cv2.imread(dir_name + '//DJI_0278.jpg')
+        img2 = cv2.imread(dir_name + '//DJI_0279.jpg')
+        img3 = cv2.imread(dir_name + '//DJI_0280.jpg')
+        imgnew1 = Warp(img1, img2)
+        imgnew2 = Warp(imgnew1, img3)
+        save(imgnew2, 'my_source')
 
 
 

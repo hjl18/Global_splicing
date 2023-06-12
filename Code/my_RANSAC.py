@@ -69,9 +69,9 @@ def RANSAC(A,B):
                 min_e = m
                 H = h
             #如果有超过p比例的点满足e_h小于e，则认为这个H是一个好的估计
-            '''
+
             if count/n > p:
                 break
-            '''
+
     return H
 

@@ -38,7 +38,7 @@ def RANSAC(A,B):
     random.seed(time.time())
     min_e = 999999
     e = 5
-    p = 0.9#
+    p = 0.9
     n = len(A)
     H = False
     for ite in range(2000):
@@ -69,7 +69,9 @@ def RANSAC(A,B):
                 min_e = m
                 H = h
             #如果有超过p比例的点满足e_h小于e，则认为这个H是一个好的估计
+            '''
             if count/n > p:
                 break
+            '''
     return H
 
